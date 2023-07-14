@@ -1,27 +1,26 @@
 ---
+title: "An Exemplary Title for an Academic Paper^[Thanks]"
+subtitle: "An Informative Subtitle"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output: 
+  bookdown::word_document2:
+    toc: no
+    number_sections: yes
+    global_numbering: true
+    reference_docx: 'style_files/word_article.docx'
+bibliography: 'references/bibliography.bib'
+nocite: '@*'
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, 
     encoding = encoding, 
     output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),"_",Sys.time(),'.docx'), 
     output_dir = "article/draft/")
   })
-title: "An Exemplary Title for an Academic Paper^[Thanks]"
-subtitle: "An Informative Subtitle"
-thanks: |
-  tidel page footnote here.
-date: "`r format(Sys.Date(), '%B %d, %Y')`"
-output: 
-  bookdown::word_document2:
-    toc: no
-    number_sections: yes
-    reference_docx: 'style_files/word_article.docx'
-bibliography: 'references/bibliography.bib'
-nocite: '@*'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-pacman::p_load("tidyverse", "flextable","officer")
+pacman::p_load("tidyverse", "flextable","officer","crosstable")
 
 ```
 
@@ -47,25 +46,24 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 # Heading 1
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 
 ## Heading 2
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
 
 ### Heading 3
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
 
 #### Heading 4
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+# Cross Referencing
 
-```{r}
-ft_basic <- function(df, caption){
+
+```{r, include=FALSE}
+ft_basic <- function(df){
   ft <- df  %>%
     flextable() %>% 
     set_table_properties( layout = "autofit",
@@ -75,30 +73,52 @@ ft_basic <- function(df, caption){
     bold(part = "header") %>%
     hline_top(part = "header",border = fp_border(width = 2)) %>%
     hline_bottom(part = "header") %>%
-    hline_bottom(part = "body" ,border = fp_border(width = 2)) %>% 
-    set_caption(caption=caption,align_with_table = TRUE,word_stylename = "Caption",autonum = TRUE)
+    hline_bottom(part = "body" ,border = fp_border(width = 2)) #%>% 
+    #set_caption(caption=caption,align_with_table = TRUE,word_stylename = "Caption",autonum = TRUE)
   return(ft)
 }
 
-ft_basic(df = head(mtcars),caption = "mtcars")
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## Figures 
 
-```{r,fig.cap="mtcars figure"}
-plot(mpg~hp, data=mtcars)
+See Figure \@ref(fig:cars-plot).
+
+```{r cars-plot, fig.cap="The cars data.", echo=FALSE}
+par(mar = c(4, 4, .2, .1))
+plot(cars)  # a scatterplot
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## Equations
+
+See Equation \@ref(eq:mean).
 
 \begin{equation}
-  X = Y
-  (\#eq:eq02)
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
 \end{equation}
 
-I refer to previous, equation \@ref(eq:eq02).
+## Tables 
+
+See Table \@ref(tab:mtcars).
+
+```{r mtcars, echo=FALSE}
+knitr::kable(mtcars[1:5, 1:5], caption = "kable with crossref")
+```
+
+See Table \@ref(tab:flextable)
+
+::: {custom-style="Table Caption"}
+<caption> (\#tab:flextable) Flextable with crossref </caption>
+:::
+
+```{r}
+ft_basic(head(mtcars))
+```
+
+# Citations
 
 Citation commands: \@sampleArticle is is Author (Year), i.e. @sampleArticle, and [\@sampleArticle] is (Author Year), i.e. [@sampleArticle].
+
 
 
 ::: {custom-style="Heading 1"}
