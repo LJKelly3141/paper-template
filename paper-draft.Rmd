@@ -1,9 +1,14 @@
 ---
 knit: (function(inputFile, encoding) {
-    rmarkdown::render(inputFile, encoding = encoding, output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),"_",Sys.time(),'.docx'), output_dir = "article/draft/")
+    rmarkdown::render(inputFile, 
+    encoding = encoding, 
+    output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),"_",Sys.time(),'.docx'), 
+    output_dir = "article/draft/")
   })
-title: "An Exemplary Title for an Academic Paper"
+title: "An Exemplary Title for an Academic Paper^[Thanks]"
 subtitle: "An Informative Subtitle"
+thanks: |
+  tidel page footnote here.
 date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
   bookdown::word_document2:
@@ -93,7 +98,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 I refer to previous, equation \@ref(eq:eq02).
 
-\newpage
+Citation commands: \@sampleArticle is is Author (Year), i.e. @sampleArticle, and [\@sampleArticle] is (Author Year), i.e. [@sampleArticle].
+
+
 ::: {custom-style="Heading 1"}
 References
 :::
