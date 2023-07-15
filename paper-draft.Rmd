@@ -20,7 +20,7 @@ knit: (function(inputFile, encoding) {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-pacman::p_load("tidyverse", "flextable","officer","crosstable")
+pacman::p_load("tidyverse", "flextable","officer","jtools")
 source("scripts/helper.R")
 ```
 
@@ -44,6 +44,8 @@ Abstract
 *[Replace with your abstract]* This project, developed in RStudio and hosted on a GitHub repository, leverages the powerful capabilities of the Bookdown package to produce an academic paper in Microsoft Word format. The template provides a structured framework for composing, compiling, and publishing scholarly works, integrating features such as automatic reference and citation management, seamless inclusion of R code and outputs, versatile formatting, and efficient version control. 
 :::
 
+**Key Words:** Article template
+
 # The YAML
 
 This YAML header configures the primary attributes of the academic paper. 
@@ -66,33 +68,7 @@ This code is an example of a YAML header used in an R Markdown document. It cont
 
     - The output file will be directed to the 'article/draft' folder: This is set by `output_dir = "article/draft/"`. If you want to change this to a different folder, for example 'article/final', you simply replace 'draft' with 'final'.
 
-
-# Heading Styles
-
-
-
-
-## Heading 2
-
-
-
-### Heading 3
-
-
-
-#### Heading 4
-
-# Cross Referencing
-
-
-## Figures 
-
-See Figure \@ref(fig:cars-plot).
-
-```{r cars-plot, fig.cap="The cars data.", echo=FALSE}
-par(mar = c(4, 4, .2, .1))
-plot(cars)  # a scatterplot
-```
+# Captions and Cross Referencing 
 
 ## Equations
 
@@ -102,13 +78,39 @@ See Equation \@ref(eq:mean).
 \bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
 \end{equation}
 
+
+## Figures 
+
+See Figure \@ref(fig:cars-plot). 
+
+```{r cars-plot, fig.cap="The cars data.", echo=FALSE}
+par(mar = c(4, 4, .2, .1))
+plot(cars)
+```
+
+
+`fig.cap="The cars data."` is used to add a caption to the figure, which reads "The cars data."
+
+`\@ref(fig:cars-plot)` is a special syntax used in R Markdown to create a cross-reference to a figure. In this case, it creates a reference to the figure produced in the code chunk labeled `cars-plot`. Note that `fig:` is added to indicate that the crossref is to a figure.
+
+The `@` symbol tells R Markdown that `ref(fig:cars-plot)` is a reference, and `fig:cars-plot` is the label of the code chunk that the figure comes from. When the R Markdown document is knit, `See Figure \@ref(fig:cars-plot)` will be replaced with something like "See Figure 1", where "1" is the automatically assigned number of the figure produced by the `cars-plot` chunk.
+
+
 ## Tables 
+
+### knitr::kable()
 
 See Table \@ref(tab:mtcars).
 
 ```{r mtcars, echo=FALSE}
 knitr::kable(mtcars[1:5, 1:5], caption = "kable with crossref")
 ```
+
+The `kable()` function allows the caption to be set directly. 
+
+`\@ref(tab:mtcars)` the label mtcars comes from the chunk label
+
+### flextable
 
 See Table \@ref(tab:flextable)
 
@@ -119,6 +121,32 @@ See Table \@ref(tab:flextable)
 ```{r}
 ft_basic(head(mtcars))
 ```
+
+
+## jtools
+
+See Table \@ref(tab:jtools)
+
+::: {custom-style="Table Caption"}
+<caption> (\#tab:jtools) jtools with crossref </caption>
+:::
+
+```{r jtools, message=FALSE,warning=FALSE}
+fit <- lm(metascore ~ log(budget), data = movies)
+fit_b <- lm(metascore ~ log(budget) + log(us_gross), data = movies)
+fit_c <- lm(metascore ~ log(budget) + log(us_gross) + runtime, data = movies)
+coef_names <- c("Budget" = "log(budget)", "US Gross" = "log(us_gross)",
+                "Runtime (Hours)" = "runtime", "Constant" = "(Intercept)")
+export_summs(fit, fit_b, fit_c, 
+             robust = "HC3", 
+             coefs = coef_names,
+             align = ".",
+             borders = 0.4,
+             outer_borders = 2) %>% 
+  huxtable::set_all_padding(3)
+```
+
+
 
 # Citations
 

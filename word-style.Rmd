@@ -10,17 +10,11 @@ output:
     reference_docx: 'style_files/word_article.docx'
 bibliography: 'references/bibliography.bib'
 nocite: '@*'
-knit: (function(inputFile, encoding) {
-    rmarkdown::render(inputFile, 
-    encoding = encoding, 
-    output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),"_",Sys.time(),'.docx'), 
-    output_dir = "article/draft/")
-  })
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-pacman::p_load("tidyverse", "flextable","officer","crosstable")
+pacman::p_load("tidyverse", "flextable","officer","jtools")
 
 ```
 
@@ -114,6 +108,29 @@ See Table \@ref(tab:flextable)
 ```{r}
 ft_basic(head(mtcars))
 ```
+
+## jtools
+
+See Table \@ref(tab:jtools)
+
+::: {custom-style="Table Caption"}
+<caption> (\#tab:jtools) jtools with crossref </caption>
+:::
+
+::: {custom-style="Table Text"}
+
+```{r jtools, message=FALSE,warning=FALSE}
+fit <- lm(metascore ~ log(budget), data = movies)
+fit_b <- lm(metascore ~ log(budget) + log(us_gross), data = movies)
+fit_c <- lm(metascore ~ log(budget) + log(us_gross) + runtime, data = movies)
+coef_names <- c("Budget" = "log(budget)", "US Gross" = "log(us_gross)",
+                "Runtime (Hours)" = "runtime", "Constant" = "(Intercept)")
+export_summs(fit, fit_b, fit_c, robust = "HC3", coefs = coef_names,borders = 0.4,outer_borders = 2)
+```
+
+:::
+
+
 
 # Citations
 
