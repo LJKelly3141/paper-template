@@ -8,12 +8,15 @@ output:
     number_sections: yes
     global_numbering: true
     reference_docx: 'style_files/word_article.docx'
+    pandoc_args: [
+      --csl=style_files/harvard-university-of-birmingham.csl
+    ]
 bibliography: 'references/bibliography.bib'
 nocite: '@*'
 knit: (function(inputFile, encoding) {
     rmarkdown::render(inputFile, 
     encoding = encoding, 
-    output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),"_",Sys.time(),'.docx'), 
+    output_file = paste0(substr(inputFile,1,nchar(inputFile)-4),"_",Sys.date(),'.docx'), 
     output_dir = "article/draft/")
   })
 ---
